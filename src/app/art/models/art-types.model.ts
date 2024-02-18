@@ -1,4 +1,12 @@
-export interface ArtWorks {
+export interface ArtworksCollection {
+    total_count: null;
+    _links:      {};
+    _embedded:   {
+        artworks: ArtWork[]
+    }
+}
+
+export interface ArtWork {
     id: string;
     slug: string;
     created_at: Date;

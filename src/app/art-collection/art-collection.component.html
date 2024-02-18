@@ -1,1 +1,7 @@
-<p>art-collection works!</p>
+<div class="main-collection">
+    <ul *ngIf="artworks$ | async as artworks">
+        <li *ngFor="let art of artworks._embedded.artworks">
+            <img [src]="art._links.image.href.replace('{image_version}', 'large')" />
+        </li>
+    </ul>
+</div>
