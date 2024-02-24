@@ -7,14 +7,21 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
+import { environment } from 'src/environments/environment';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication({
+  const msalInstance = new PublicClientApplication({
     auth: {
-      clientId: '365f67f6-15c0-46b1-af0b-eee26eec0e0c',
+      clientId: environment.MSAL_TOKEN,
       redirectUri: 'http://localhost:4200'
+    },
+    system: {
+      allowNativeBroker: false, // Disables native brokering support
     }
   });
+
+  msalInstance.initialize();
+  return msalInstance;
 }
 
 @NgModule({
