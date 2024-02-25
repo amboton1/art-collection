@@ -5,23 +5,46 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
-import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
+import { MSAL_INSTANCE, MsalGuardConfiguration, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService } from '@azure/msal-angular';
+import { BrowserCacheLocation, IPublicClientApplication, InteractionType, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 
+export function loggerCallback(logLevel: LogLevel, message: string) {
+  console.log(message);
+}
+
 export function MSALInstanceFactory(): IPublicClientApplication {
-  const msalInstance = new PublicClientApplication({
+  return new PublicClientApplication({
     auth: {
       clientId: environment.MSAL_TOKEN,
-      redirectUri: 'http://localhost:4200'
+      redirectUri: 'http://localhost:4200',
+      postLogoutRedirectUri: 'http://localhost:4200'
+    },
+    cache: {
+      cacheLocation: BrowserCacheLocation.LocalStorage
     },
     system: {
-      allowNativeBroker: false, // Disables native brokering support
+      loggerOptions: {
+        loggerCallback,
+        logLevel: LogLevel.Info,
+        piiLoggingEnabled: false
+      }
     }
   });
+}
 
-  msalInstance.initialize();
-  return msalInstance;
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap
+  };
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return { interactionType: InteractionType.Redirect };
 }
 
 @NgModule({
@@ -42,6 +65,6 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     },
     MsalService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

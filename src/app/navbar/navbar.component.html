@@ -17,7 +17,7 @@
     </div>
     
     <div class="nav-links">
-      <button (click)="login()" *ngIf="!isLoggedIn()">SIGN IN</button>
-      <button (click)="logout()" *ngIf="isLoggedIn()">SIGN OUT</button>
+      <button (click)="login()" *ngIf="!isLoggedIn()" class="log">Login</button>
+      <button (click)="logout()" *ngIf="isLoggedIn()" class="reg">Logout</button>
     </div>
   </div>
