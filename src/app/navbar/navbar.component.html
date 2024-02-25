@@ -17,7 +17,7 @@
     </div>
     
     <div class="nav-links">
-      <a href="https://codepen.io/jo_Geek/" target="_blank">Log in</a>
-      <a href="https://jsfiddle.net/user/jo_Geek/" target="_blank">Sign up</a>
+      <button (click)="login()" *ngIf="!isLoggedIn()">SIGN IN</button>
+      <button (click)="logout()" *ngIf="isLoggedIn()">SIGN OUT</button>
     </div>
   </div>
