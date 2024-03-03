@@ -2,6 +2,8 @@
     <ul *ngIf="artworks$ | async as artworks">
         <li *ngFor="let art of artworks._embedded.artworks">
             <img [src]="art._links.image.href.replace('{image_version}', 'large')" />
+            <p>{{art.title}}</p>
+            <span>{{art.collecting_institution}}</span>
         </li>
     </ul>
 </div>
