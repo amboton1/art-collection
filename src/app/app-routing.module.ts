@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MsalGuard } from './msal.guard';
 
 const routes: Routes = [
   {
@@ -9,6 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'arts',
+    canActivate: [MsalGuard],
     loadChildren: () => import('./art/art.module').then(m => m.ArtModule)
   }
 ];
