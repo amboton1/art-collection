@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ArtworksService {
-  headers = new HttpHeaders({
+    headers = new HttpHeaders({
     'X-Xapp-Token': environment.TOKEN,
     'Content-Type': 'application/json'
   });
